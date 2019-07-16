@@ -214,10 +214,12 @@ int DoDaiDS(List l)
 //--------------ghi ds vao file -------------//
 void GhiDSvaoFile(List &l)
 {
-    FILE *f = fopen(SOURCE_PATH, "a");
+    FILE *f = fopen(SOURCE_PATH, "w");
+    int n = DoDaiDS(l);
+    fprintf(f, "%d\n", n);
     for (pNode  temp=l.pHead; temp; temp=temp->Next)
     {
-        fprintf(f, "\n%s", temp->Data.hoten);
+        fprintf(f, "%s", temp->Data.hoten);
         fprintf(f, "%d", temp->Data.sdt);
         fprintf(f, "\n%s", temp->Data.email);
         fprintf(f, "%s", temp->Data.diachi);
@@ -227,17 +229,11 @@ void GhiDSvaoFile(List &l)
 
 //------------------------------------------//
 //-----------Load file----------------------//
-void remove_newlines(char * source)
-{
-    int len = strlen(source);
-    source[len-1] = '\0';
-}
 
 void LoadFile(List &l)
 {
     FILE *f = fopen(SOURCE_PATH, "r");
     int dodaids;
-
     fscanf(f, " %d ", &dodaids);
     int i=0;
     DanhBa temp;
@@ -246,25 +242,20 @@ void LoadFile(List &l)
     {
          if (fgets(buffer, 256, f))
         {
-            remove_newlines(buffer);
+
             strcpy(temp.hoten, buffer);
-            printf("%s",temp.hoten);
         }
         fscanf(f, " %d ", &temp.sdt);
         if (fgets(buffer, 256, f))
         {
-            remove_newlines(buffer);
+
             strcpy(temp.email, buffer);
-            printf("%4s",temp.email);
         }
         if (fgets(buffer, 256, f))
         {
-            remove_newlines(buffer);
-            strcpy(temp.diachi, buffer);
-            printf("%4s",temp.diachi);
-        }       
 
-        
+            strcpy(temp.diachi, buffer);
+        }
         pNode temp_node = TaoNode(temp);
         ThemCuoi(l, temp_node);
         i++;
@@ -274,10 +265,7 @@ void LoadFile(List &l)
 };
 //------------------------------------------//
 //-----------Back up file ------------------//
-//void Backup()
-//{
 
-//}
 
 //-----------------------------------------//
 int main()
@@ -403,11 +391,39 @@ int main()
             break;
         case 5:
             {
-                char target_file[20];
-                printf("\nNhap ten file backup: \n");
+                char ch, source_file[20], target_file[20];
+                FILE *source, *target;
+                
+                printf("Enter name of file to copy\n");
+                fflush(stdin);
+                fgets(source_file,20,stdin);
+                
+                source = fopen(source_file, "r");
+                
+                if (source == NULL)
+                {
+                    printf("Press any key to exit...\n");
+                }
+                
+                printf("Enter name of target file\n");
                 fflush(stdin);
                 fgets(target_file,20,stdin);
-                FILE * target = fopen(target_file, "w");
+                
+                target = fopen(target_file, "w");
+                
+                if (target == NULL)
+                {
+                    fclose(source);
+                    printf("Press any key to exit...\n");
+                }
+                
+                while ((ch = fgetc(source)) != EOF)
+                    fputc(ch, target);
+                
+                printf("File copied successfully.\n");
+                
+                fclose(source);
+                fclose(target);
             }
             break;
         }
