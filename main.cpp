@@ -1,7 +1,10 @@
 #include <stdio.h>
 #include <conio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "data_structrue.h"
 #define CONSOLE_WIDTH 80
+#define SOURCE_PATH "danhba.txt"
 // Ham khoi tao list
 void InitList(List &l)
 {
@@ -171,6 +174,112 @@ void TimSDT(List l, int sdt_cantim)
 
 
 //------------------------------------------//
+//---------------Sua sdt--------------------//
+pNode TimX(List l, int sdt_cantim)
+{
+    pNode p = l.pHead;
+    while (p && p->Data.sdt != sdt_cantim)
+    {
+        p=p->Next;
+    }
+    return p;
+}
+void SuaSDT(List &l, int sua_sdt)
+{
+    DanhBa x;
+    pNode p = TimX(l,sua_sdt);
+    printf("\nNhap cac thong tin moi: \n");
+    printf("\nSo dien thoai: %d --->>>",p->Data.sdt);
+    scanf("%d",p->Data.sdt);
+    printf("\nHo va ten: %s --->>>",p->Data.hoten);
+    fflush(stdin);
+    fgets(p->Data.hoten,25,stdin);
+    printf("\nEmail: %s --->>>",p->Data.email);
+    fflush(stdin);
+    fgets(p->Data.email,50,stdin);
+    printf("\nDia chi: %s --->>>",p->Data.diachi);
+    fflush(stdin);
+    fgets(p->Data.diachi,255,stdin);
+}
+//------------------------------------------//
+int DoDaiDS(List l)
+{
+    int dem = 0;
+    for (pNode i = l.pHead; i ; i=i->Next)
+    {
+        dem++;
+    }
+    return dem;
+}
+//--------------ghi ds vao file -------------//
+void GhiDSvaoFile(List &l)
+{
+    FILE *f = fopen(SOURCE_PATH, "a");
+    for (pNode  temp=l.pHead; temp; temp=temp->Next)
+    {
+        fprintf(f, "\n%s", temp->Data.hoten);
+        fprintf(f, "%d", temp->Data.sdt);
+        fprintf(f, "\n%s", temp->Data.email);
+        fprintf(f, "%s", temp->Data.diachi);
+    }
+    fclose(f);
+}
+
+//------------------------------------------//
+//-----------Load file----------------------//
+void remove_newlines(char * source)
+{
+    int len = strlen(source);
+    source[len-1] = '\0';
+}
+
+void LoadFile(List &l)
+{
+    FILE *f = fopen(SOURCE_PATH, "r");
+    int dodaids;
+
+    fscanf(f, " %d ", &dodaids);
+    int i=0;
+    DanhBa temp;
+    char buffer[256];
+    while (i < dodaids)
+    {
+         if (fgets(buffer, 256, f))
+        {
+            remove_newlines(buffer);
+            strcpy(temp.hoten, buffer);
+            printf("%s",temp.hoten);
+        }
+        fscanf(f, " %d ", &temp.sdt);
+        if (fgets(buffer, 256, f))
+        {
+            remove_newlines(buffer);
+            strcpy(temp.email, buffer);
+            printf("%4s",temp.email);
+        }
+        if (fgets(buffer, 256, f))
+        {
+            remove_newlines(buffer);
+            strcpy(temp.diachi, buffer);
+            printf("%4s",temp.diachi);
+        }       
+
+        
+        pNode temp_node = TaoNode(temp);
+        ThemCuoi(l, temp_node);
+        i++;
+    };
+    printf("%d danh ba da duoc doc\n", DoDaiDS(l));
+    fclose(f);
+};
+//------------------------------------------//
+//-----------Back up file ------------------//
+//void Backup()
+//{
+
+//}
+
+//-----------------------------------------//
 int main()
 {
     List l;
@@ -198,8 +307,20 @@ int main()
         {
         case 1:
             {
-                
+                char tieptuc;
                 Input(l);
+                printf("\nBan co muon ghi vao file txt?(y/n):\t");
+                fflush(stdin);
+                scanf("%c", &tieptuc);
+                if(tieptuc == 'y')
+                {
+                    GhiDSvaoFile(l);
+                    break;
+                }
+                else
+                {
+                    break;
+                }
                 
             }
             break;
@@ -209,13 +330,28 @@ int main()
                 XuatDanhBa(l);
                 if(l.pHead==NULL)
                 {
-                    char tiep_tuc;
+                    char tieptuc_tao;
                     printf("\nBan co muon tao danh ba moi?(y/n)\n");
                     fflush(stdin);
-                    scanf("%c", &tiep_tuc);
-                    if(tiep_tuc == 'y')
+                    scanf("%c", &tieptuc_tao);
+                    if(tieptuc_tao == 'y')
                     {
+                        char tieptuc_ghi;
                         Input(l);
+                        printf("\nBan co muon ghi vao file txt?(y/n):\t");
+                        fflush(stdin);
+                        scanf("%c", &tieptuc_ghi);
+                        if(tieptuc_ghi == 'y')
+                        {
+                            GhiDSvaoFile(l);
+                            printf("Nhap ENTER de tiep tuc\n");
+                            getchar();
+                            break;
+                        }
+                        else
+                        {
+                            break;
+                        }
                     }
                     else
                         break;
@@ -240,7 +376,10 @@ int main()
                         break;
                     case 2:
                         {
-
+                            int sua_sdt;
+                            printf("\nNhap sdt cua danh ba can sua: ");
+                            scanf("%d",&sua_sdt);
+                            SuaSDT(l,sua_sdt);
                         }
                         break;
                     case 3:
@@ -259,28 +398,20 @@ int main()
             break;
         case 4:
             {
-
+                LoadFile(l);
             }
             break;
         case 5:
             {
-
+                char target_file[20];
+                printf("\nNhap ten file backup: \n");
+                fflush(stdin);
+                fgets(target_file,20,stdin);
+                FILE * target = fopen(target_file, "w");
             }
             break;
         }
         
     } while (n);
-    
-    
-
-    //1.tao danh ba
-    //1.1-input
-    //1.1-output 
-    //1.1.1--input vao file txt
-    //2xuat danh ba
-    //2.1-sua danh ba
-    //2.2-xoa danh ba
-    //3.load file
-    //4.backup file
 
 }
