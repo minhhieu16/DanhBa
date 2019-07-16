@@ -109,7 +109,6 @@ void XoaDanhBa(List &l,int del_sdt)
 //---------------------------------------//
 void XuatChiTietDanhBa(DanhBa x)
 {
-    printf("\n");
     printf("\n|------------------------------------------------------------------| ");
     printf("\nHo va Ten: %s",x.hoten);
     printf("So dien thoai: %d",x.sdt);
@@ -137,9 +136,11 @@ void Input(List &l)
 void XuatDanhBa(List l)
 {
     printf("\n Danh ba: \n");
+    int stt = 0;
     for (pNode i = l.pHead; i ; i=i->Next)
     {
-        printf("Danh ba thu %d",i);
+        stt++;
+        printf("\nDanh ba thu %d",stt);
         XuatChiTietDanhBa(i->Data);
     }
     if(l.pHead == NULL)
@@ -148,6 +149,28 @@ void XuatDanhBa(List l)
     }
     
 }
+//--------------- Tim SDT --------------------//
+
+void TimSDT(List l, int sdt_cantim)
+{
+    pNode p = l.pHead;
+    while (p && p->Data.sdt != sdt_cantim)
+    {
+        p=p->Next;
+    }
+    if(p)
+    {
+        XuatChiTietDanhBa(p->Data);
+    }
+    else
+    {
+        printf("\nKhong tim thay!\n");
+    }
+    
+}
+
+
+//------------------------------------------//
 int main()
 {
     List l;
@@ -169,7 +192,7 @@ int main()
         printf("------------------------------------------**\n");
         printf("|         5. Backup \n");
         printf("------------------------------------------**\n");
-        printf("\nChon 1 trong các chuc nang tren: ");
+        printf("\nChon 1 trong cac chuc nang tren: ");
         scanf("%d",&n);
         switch (n)
         {
@@ -228,7 +251,10 @@ int main()
             break;
         case 3:
             {
-
+                int sdt;
+                printf("\nNhap sdt can tim: ");
+                scanf("%d",&sdt);
+                TimSDT(l,sdt);
             }
             break;
         case 4:
@@ -252,7 +278,6 @@ int main()
     //1.1-output 
     //1.1.1--input vao file txt
     //2xuat danh ba
-    XuatDanhBa(l);
     //2.1-sua danh ba
     //2.2-xoa danh ba
     //3.load file
