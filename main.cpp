@@ -44,15 +44,6 @@ void ThemCuoi(List &l, pNode p)
 }
 //------------------- Xoa ---------------//
 
-//xoa dau
-//void XoaDau(List &l)
-//{
-//    pNode p = l.pHead;
-//    l.pHead = p->Next;
-//    p->Next = NULL;
-//    delete p;
-//}
-
 void XoaDau(List &l)
 {
 	if (!l.pHead)
@@ -178,6 +169,7 @@ int main()
         printf("------------------------------------------**\n");
         printf("|         5. Backup \n");
         printf("------------------------------------------**\n");
+        printf("\nChon 1 trong các chuc nang tren: ");
         scanf("%d",&n);
         switch (n)
         {
@@ -195,10 +187,10 @@ int main()
                 if(l.pHead==NULL)
                 {
                     char tiep_tuc;
-                    printf("\nBan co muon tao danh ba moi?(y/n)");
+                    printf("\nBan co muon tao danh ba moi?(y/n)\n");
                     fflush(stdin);
                     scanf("%c", &tiep_tuc);
-                    if(tiep_tuc == "y")
+                    if(tiep_tuc == 'y')
                     {
                         Input(l);
                     }
@@ -207,10 +199,11 @@ int main()
                 }
                 else
                 {
-                    printf("\nChon 1 trong cac lenh sau:");
+                    
                     printf("\n1.Xoa 1 danh ba theo so dien thoai");
                     printf("\n2.Sua 1 danh ba");
                     printf("\n3.Quay lai");
+                    printf("\nChon 1 trong cac lenh tren: ");
                     scanf("%d",&task);
                     switch (task)
                     {
