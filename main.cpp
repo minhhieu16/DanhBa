@@ -45,19 +45,52 @@ void ThemCuoi(List &l, pNode p)
 //------------------- Xoa ---------------//
 
 //xoa dau
-void XoaDau(List &l,int sdt)
+//void XoaDau(List &l)
+//{
+//    pNode p = l.pHead;
+//    l.pHead = p->Next;
+//    p->Next = NULL;
+//    delete p;
+//}
+
+void XoaDau(List &l)
 {
-    pNode p = l.pHead;
-    while (p && p->Data != sdt)
-    {
-        /* code */
-    }
-    
+	if (!l.pHead)
+		return;
+	pNode delete_node = l.pHead;
+
+	l.pHead = delete_node->Next;
+
+	if (delete_node == l.pTail)
+		l.pTail = NULL;
+	delete delete_node;
+
 }
 
+void XoaCuoi(List &l)
+{
+	if (!l.pHead)
+		return;
+	pNode delete_node = l.pTail;
+
+	if (delete_node == l.pHead)
+	{
+		l.pHead = NULL;
+		l.pTail = NULL;
+	}
+	else
+	{
+		pNode  i;
+		for (i= l.pHead; i->Next != l.pTail; i=i->Next);
+
+		i->Next=NULL;
+		l.pTail = i;
+	}
+	delete delete_node;
+}
 void XoaDanhBa(List &l,int del_sdt)
 {
-    
+    if()
 }
 
 
@@ -141,28 +174,43 @@ int main()
             {
                 int task;
                 XuatDanhBa(l);
-                printf("\nChon 1 trong cac lenh sau:");
-                printf("\n1.Xoa 1 danh ba theo so dien thoai");
-                printf("\n2.Sua 1 danh ba");
-                printf("\n3.Quay lai");
-                scanf("%d",&task);
-                switch (task)
+                if(l.pHead==NULL)
                 {
-                case 1:
+                    char ktra_tiep[1];
+                    printf("\nBan co muon tao danh ba moi?(y/n)");
+                    scanf("%c",&ktra_tiep);
+                    if(ktra_tiep == "y")
                     {
-                        int Del_sdt;
-                        printf("\nNhap sdt can xoa: ");
-                        scanf("%d",&Del_sdt);
-                        XoaDanhBa(l,Del_sdt);
+                        Input(l);
                     }
-                    break;
-                case 2:
+                    else
+                        break;
+                }
+                else
+                {
+                    printf("\nChon 1 trong cac lenh sau:");
+                    printf("\n1.Xoa 1 danh ba theo so dien thoai");
+                    printf("\n2.Sua 1 danh ba");
+                    printf("\n3.Quay lai");
+                    scanf("%d",&task);
+                    switch (task)
                     {
+                    case 1:
+                        {
+                            int Del_sdt;
+                            printf("\nNhap sdt can xoa: ");
+                            scanf("%d",&Del_sdt);
+                            XoaDanhBa(l,Del_sdt);
+                        }
+                        break;
+                    case 2:
+                        {
 
+                        }
+                        break;
+                    case 3:
+                        break;
                     }
-                    break;
-                case 3:
-                    break;
                 }
             }
             break;
