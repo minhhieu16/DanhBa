@@ -88,9 +88,29 @@ void XoaCuoi(List &l)
 	}
 	delete delete_node;
 }
+void XoaSDT(List &l, pNode sdt_canxoa)
+{
+    pNode delete_node = sdt_canxoa->Next;
+    sdt_canxoa->Next= delete_node->Next;
+    delete_node->Next = NULL;
+    delete delete_node;
+}
 void XoaDanhBa(List &l,int del_sdt)
 {
-    if()
+    if(!del_sdt)
+        return;
+    else if (del_sdt == l.pHead->Data.sdt)
+        XoaDau(l);
+    else if(del_sdt == l.pTail->Data.sdt)
+        XoaCuoi(l);
+    else
+    {
+        pNode i=l.pHead;
+		while (i && i->Data.sdt != del_sdt)
+			i = i->Next;
+		if (i)
+			XoaSDT(l, i);
+    }
 }
 
 
@@ -158,8 +178,6 @@ int main()
         printf("------------------------------------------**\n");
         printf("|         5. Backup \n");
         printf("------------------------------------------**\n");
-        printf("|         6. Thoat \n");
-        printf("------------------------------------------**\n");
         scanf("%d",&n);
         switch (n)
         {
@@ -176,10 +194,11 @@ int main()
                 XuatDanhBa(l);
                 if(l.pHead==NULL)
                 {
-                    char ktra_tiep[1];
+                    char tiep_tuc;
                     printf("\nBan co muon tao danh ba moi?(y/n)");
-                    scanf("%c",&ktra_tiep);
-                    if(ktra_tiep == "y")
+                    fflush(stdin);
+                    scanf("%c", &tiep_tuc);
+                    if(tiep_tuc == "y")
                     {
                         Input(l);
                     }
@@ -228,8 +247,6 @@ int main()
             {
 
             }
-            break;
-        case 6:
             break;
         }
         
