@@ -446,7 +446,7 @@ int main()
                 while ((ch = fgetc(source)) != EOF)
                     fputc(ch, target);
                 
-                printf("File copied successfully.\n");
+                printf("\nFile copied successfully.\n");
                 
                 fclose(source);
                 fclose(target);
