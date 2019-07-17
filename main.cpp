@@ -2,6 +2,7 @@
 #include <conio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
 #include "data_structrue.h"
 #define CONSOLE_WIDTH 80
 #define SOURCE_PATH "danhba.txt"
@@ -403,8 +404,20 @@ int main()
                 printf("Enter name of target file\n");
                 fflush(stdin);
                 fgets(target_file,20,stdin);
-                
+                target_file[strlen(target_file) - 1] = '\0';
+                if( source == NULL )
+                {
+                    printf("Loi\n");
+                    exit(EXIT_FAILURE);
+                }
                 target = fopen(target_file, "w");
+                if( target == NULL )
+                {
+                    fclose(source);
+                    printf("Loi target!\n");
+                    printf("Loi: %s\n", strerror(errno));
+                    exit(EXIT_FAILURE);
+                }
                 printf("%s",target_file);
                 while ((ch = fgetc(source)) != EOF)
                     fputc(ch, target);
