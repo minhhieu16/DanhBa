@@ -184,22 +184,27 @@ pNode TimX(List l, int sdt_cantim)
     }
     return p;
 }
+pNode PreY(List l,int sua_sdt)// tim truoc cua 1 node
+{
+    pNode p = l.pHead;
+    while (p->Next->Data.sdt != sua_sdt)
+    {
+        p=p->Next;
+    }
+    return p;
+}
 void SuaSDT(List &l, int sua_sdt)
 {
     DanhBa x;
     pNode p = TimX(l,sua_sdt);
-    printf("\nNhap cac thong tin moi: \n");
-    printf("\nSo dien thoai: %d --->>>",p->Data.sdt);
-    scanf("%d",p->Data.sdt);
-    printf("\nHo va ten: %s --->>>",p->Data.hoten);
-    fflush(stdin);
-    fgets(p->Data.hoten,25,stdin);
-    printf("\nEmail: %s --->>>",p->Data.email);
-    fflush(stdin);
-    fgets(p->Data.email,50,stdin);
-    printf("\nDia chi: %s --->>>",p->Data.diachi);
-    fflush(stdin);
-    fgets(p->Data.diachi,255,stdin);
+    pNode truocP = PreY(l,sua_sdt);
+    printf("\nNhap thong tin sua moi: \n");
+    NhapDanhBa(x);
+    pNode new_db = TaoNode(x);
+    truocP ->Next = new_db;
+    new_db->Next = p->Next;
+    p->Next = NULL;
+    delete p;
 }
 //------------------------------------------//
 int DoDaiDS(List l)
@@ -346,7 +351,6 @@ int main()
                 }
                 else
                 {
-                    
                     printf("\n1.Xoa 1 danh ba theo so dien thoai");
                     printf("\n2.Sua 1 danh ba");
                     printf("\n3.Quay lai");
@@ -394,29 +398,14 @@ int main()
                 char ch, source_file[20], target_file[20];
                 FILE *source, *target;
                 
-                printf("Enter name of file to copy\n");
-                fflush(stdin);
-                fgets(source_file,20,stdin);
-                
-                source = fopen(source_file, "r");
-                
-                if (source == NULL)
-                {
-                    printf("Press any key to exit...\n");
-                }
+                source = fopen("danhba.txt", "r");
                 
                 printf("Enter name of target file\n");
                 fflush(stdin);
                 fgets(target_file,20,stdin);
                 
                 target = fopen(target_file, "w");
-                
-                if (target == NULL)
-                {
-                    fclose(source);
-                    printf("Press any key to exit...\n");
-                }
-                
+                printf("%s",target_file);
                 while ((ch = fgetc(source)) != EOF)
                     fputc(ch, target);
                 
