@@ -198,14 +198,38 @@ void SuaSDT(List &l, int sua_sdt)
 {
     DanhBa x;
     pNode p = TimX(l,sua_sdt);
-    pNode truocP = PreY(l,sua_sdt);
-    printf("\nNhap thong tin sua moi: \n");
-    NhapDanhBa(x);
-    pNode new_db = TaoNode(x);
-    truocP ->Next = new_db;
-    new_db->Next = p->Next;
-    p->Next = NULL;
-    delete p;
+    if(p->Data.sdt == l.pHead->Data.sdt)
+    {
+        printf("\nNhap thong tin sua moi: \n");
+        NhapDanhBa(x);
+        pNode new_db = TaoNode(x);
+        new_db->Next = p->Next;
+        l.pHead = new_db;
+        p->Next = NULL;
+        delete p;
+    }
+    else if(p->Data.sdt == l.pTail->Data.sdt)
+    {
+        pNode truocP = PreY(l,sua_sdt);
+        printf("\nNhap thong tin sua moi: \n");
+        NhapDanhBa(x);
+        pNode new_db = TaoNode(x);
+        truocP->Next = new_db;
+        l.pTail = new_db;
+        delete p;
+    }
+    else
+    {
+        pNode truocP = PreY(l,sua_sdt);
+        printf("\nNhap thong tin sua moi: \n");
+        NhapDanhBa(x);
+        pNode new_db = TaoNode(x);
+        truocP ->Next = new_db;
+        new_db->Next = p->Next;
+        p->Next = NULL;
+        delete p;
+    }
+    
 }
 //------------------------------------------//
 int DoDaiDS(List l)
