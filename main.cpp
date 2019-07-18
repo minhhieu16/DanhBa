@@ -1,3 +1,4 @@
+// Ao Minh Hieu DHHTTT12A Ngay 18/07/2019
 #include <stdio.h>
 #include <conio.h>
 #include <stdlib.h>
@@ -149,7 +150,7 @@ void XuatDanhBa(List l)
     }
     if(l.pHead == NULL)
     {
-        printf("\nDanh ba rong!\n");
+        printf("\nDanh ba khong co  sdt !\n");
     }
     
 }
@@ -429,6 +430,7 @@ int main()
                 fflush(stdin);
                 fgets(target_file,20,stdin);
                 target_file[strlen(target_file) - 1] = '\0';
+                //printf("%d",strlen(target_file) - 1);
                 if( source == NULL )
                 {
                     printf("Loi\n");
@@ -442,7 +444,7 @@ int main()
                     printf("Loi: %s\n", strerror(errno));
                     exit(EXIT_FAILURE);
                 }
-                printf("%s",target_file);
+                //printf("%s",target_file);
                 while ((ch = fgetc(source)) != EOF)
                     fputc(ch, target);
                 
